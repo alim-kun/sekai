@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEKAI — Anime Streaming Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0b13',
+                        cardBg: '#13131f',
+                        cardHover: '#1c1c2e',
+                        brandPurple: '#7c3aed',
+                        brandBlue: '#3b82f6',
+                        accentPink: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0b13; color: #fff; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0b13; }
+        ::-webkit-scrollbar-thumb { background: #1c1c2e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-[#0b0b13]/85 backdrop-blur-md border-b border-white/10 px-4 lg:px-6 py-4 flex items-center justify-between gap-3">
+        <div class="flex items-center space-x-5 lg:space-x-7">
+            <div class="flex items-center space-x-2 cursor-pointer shrink-0" onclick="switchPage('home')">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center font-extrabold text-lg shadow-lg">S</div>
+                <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">SEKAI</span>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-1 bg-white/5 p-1 rounded-full border border-white/5 text-xs lg:text-sm font-medium">
+                <button onclick="switchPage('home')" id="nav-home" class="px-4 py-2 rounded-full transition-all bg-purple-600 text-white shadow cursor-pointer">Home</button>
+                <button onclick="switchPage('anime')" id="nav-anime" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Anime</button>
+                <button onclick="switchPage('quiz')" id="nav-quiz" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Quiz</button>
+                <button onclick="switchPage('quests')" id="nav-quests" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Quests</button>
+                <button onclick="switchPage('rewards')" id="nav-rewards" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Rewards</button>
+                <button onclick="switchPage('community')" id="nav-community" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Community</button>
+                <button onclick="switchPage('leaderboard')" id="nav-leaderboard" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Top</button>
+                <button onclick="switchPage('support')" id="nav-support" class="px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer">Support</button>
+            </nav>
+        </div>
+
+        <div class="flex items-center space-x-3 shrink-0">
+            <div id="user-header-container"></div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAV -->
+    <div class="flex md:hidden overflow-x-auto gap-1.5 px-4 py-2.5 bg-[#0e0e18] border-b border-white/5 text-xs">
+        <button onclick="switchPage('home')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Home</button>
+        <button onclick="switchPage('anime')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Anime</button>
+        <button onclick="switchPage('quiz')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Quiz</button>
+        <button onclick="switchPage('quests')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Quests</button>
+        <button onclick="switchPage('rewards')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Rewards</button>
+        <button onclick="switchPage('community')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Community</button>
+        <button onclick="switchPage('leaderboard')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Top</button>
+        <button onclick="switchPage('support')" class="px-3 py-1.5 rounded-full bg-white/10 shrink-0">Support</button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 py-8">
+
+        <!-- PAGE 1: HOME -->
+        <div id="page-home" class="space-y-12">
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-white/10 p-8 md:p-12 flex flex-col justify-end min-h-[430px]">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1600')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b13] via-[#0b0b13]/60 to-transparent"></div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider">
+                        <span class="px-2.5 py-1 rounded bg-purple-600/30 text-purple-300 border border-purple-500/30">Action</span>
+                        <span class="px-2.5 py-1 rounded bg-blue-600/30 text-blue-300 border border-blue-500/30">Fantasy</span>
+                        <span class="px-2.5 py-1 rounded bg-pink-600/30 text-pink-300 border border-pink-500/30">SEKAI</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">SEKAI Anime Universe</h1>
+                    <p class="text-gray-300 text-sm md:text-base">Смотрите эпизоды через YouTube-плеер, проходите квизы и ежедневные задания, копите XP и обменивайте их на награды.</p>
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <button onclick="openWatchByIndex(0)" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 transition-all cursor-pointer">
+                            <i class="fa-solid fa-play"></i><span>Watch Page</span>
+                        </button>
+                        <button onclick="switchPage('quests')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl border border-white/10 transition-all flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-bolt text-yellow-400"></i><span>Daily Quests</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <section class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold flex items-center space-x-2"><span class="text-orange-500">🔥</span> <span>Trending Now</span></h2>
+                    <button onclick="switchPage('anime')" class="text-sm text-purple-400 hover:text-purple-300 font-semibold cursor-pointer">See all →</button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="home-trending-grid"></div>
+            </section>
+        </div>
+
+        <!-- PAGE 2: ANIME CATALOG -->
+        <div id="page-anime" class="hidden space-y-8">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold">Discover Anime</h1>
+                <p class="text-gray-400 text-sm">Выберите тайтл, чтобы открыть страницу просмотра (Watch Page) или добавить в Watchlist.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 items-center justify-between bg-cardBg p-4 rounded-2xl border border-white/5">
+                <input type="text" id="anime-search-input" oninput="filterCatalog()" placeholder="Search anime by title, genre..." class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm w-full md:w-80 focus:outline-none focus:border-purple-500">
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400">Sort by:</span>
+                    <select id="anime-sort-select" onchange="filterCatalog()" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+                        <option value="rating" class="bg-darkBg">Rating</option>
+                        <option value="title" class="bg-darkBg">Title</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6" id="catalog-grid"></div>
+        </div>
+
+        <!-- PAGE: WATCH PAGE -->
+        <div id="page-watch" class="hidden space-y-8">
+            <div class="flex items-center justify-between gap-4">
+                <button onclick="switchPage('anime')" class="bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold px-4 py-2 rounded-xl cursor-pointer">
+                    ← Назад в каталог
+                </button>
+                <span id="watch-episode-badge" class="text-xs font-bold bg-purple-600/30 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-full">Episode 1</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <div id="watch-player-wrapper" class="aspect-video w-full rounded-3xl overflow-hidden bg-black border border-white/10 shadow-2xl"></div>
+
+                    <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div>
+                                <h1 id="watch-title" class="text-2xl sm:text-3xl font-extrabold">Anime Title</h1>
+                                <p id="watch-meta" class="text-xs text-gray-400 mt-1">Action • 24 eps • Rating 9.0</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="markCurrentEpisodeWatched()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer">
+                                    ✓ Просмотрено (+100 XP)
+                                </button>
+                                <button id="watch-add-btn" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-4 py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer">
+                                    + Watchlist
+                                </button>
+                            </div>
+                        </div>
+                        <p id="watch-desc" class="text-gray-300 text-sm leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4 h-fit">
+                    <h2 class="text-lg font-bold">Эпизоды</h2>
+                    <div id="watch-episodes-list" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-3 gap-2 max-h-[420px] overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: QUIZ HUB -->
+        <div id="page-quiz" class="hidden space-y-8">
+            <div id="quiz-guest-guard"></div>
+            <div id="quiz-main-content" class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-cardBg border border-white/10 rounded-3xl p-8 shadow-xl text-center space-y-3">
+                    <div class="w-14 h-14 bg-purple-600/20 border border-purple-500/30 rounded-2xl mx-auto flex items-center justify-center text-2xl">🧠</div>
+                    <h1 class="text-3xl font-extrabold">Anime Quiz Hub</h1>
+                    <p class="text-gray-400 text-sm">Ответьте на <strong>все вопросы правильно</strong>, чтобы получить <span class="text-yellow-400 font-bold">+1000 XP</span>!</p>
+                </div>
+                <div id="quiz-container-box"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: DAILY QUESTS -->
+        <div id="page-quests" class="hidden space-y-8">
+            <div id="quests-guest-guard"></div>
+            <div id="quests-main-content" class="space-y-8">
+                <div class="space-y-2">
+                    <h1 class="text-3xl font-extrabold">⚡ Ежедневные задания</h1>
+                    <p class="text-gray-400 text-sm">Выполняйте активности на платформе и забирайте бонусный XP.</p>
+                </div>
+                <div id="quests-list-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: REWARDS -->
+        <div id="page-rewards" class="hidden space-y-8">
+            <div id="rewards-guest-guard"></div>
+            <div id="rewards-main-content" class="space-y-8">
+                <div class="space-y-2">
+                    <h1 class="text-3xl font-extrabold">Rewards</h1>
+                    <p class="text-gray-400 text-sm">Обменивайте накопленный XP на награды (список наград настраивается администратором).</p>
+                </div>
+                <div class="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-white/10 rounded-3xl p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div>
+                        <h2 class="text-sm font-semibold text-purple-300 uppercase tracking-wider">Ваш баланс</h2>
+                        <h3 class="text-2xl font-extrabold mt-1">Reward Balance</h3>
+                        <p class="text-gray-300 text-sm mt-1">Зарабатывайте XP в квизах, заданиях и за просмотр эпизодов</p>
+                    </div>
+                    <div class="flex items-center space-x-8 bg-black/30 px-6 py-4 rounded-2xl border border-white/10">
+                        <div><div id="rewards-xp-display" class="text-2xl font-extrabold text-yellow-400">0 XP</div><div class="text-xs text-gray-400">Available XP</div></div>
+                        <div><div id="rewards-level-display" class="text-2xl font-extrabold text-purple-400">Level 1</div><div class="text-xs text-gray-400">Level</div></div>
+                    </div>
+                </div>
+                <div id="rewards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+            </div>
+        </div>
+
+        <!-- PAGE: COMMUNITY -->
+        <div id="page-community" class="hidden space-y-8">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold">💬 Сообщество SEKAI</h1>
+                <p class="text-gray-400 text-sm">Делитесь впечатлениями об аниме, обсуждайте серии и ставьте лайки.</p>
+            </div>
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4">
+                <h2 class="text-lg font-bold">Новый пост</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <select id="post-anime-select" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                        <option value="Общее обсуждение" class="bg-darkBg">Общее обсуждение</option>
+                    </select>
+                </div>
+                <textarea id="post-text-input" placeholder="Напишите своё мнение об аниме или серии..." class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-purple-500 h-24"></textarea>
+                <button onclick="createCommunityPost()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Опубликовать</button>
+            </div>
+            <div id="community-posts-list" class="space-y-4"></div>
+        </div>
+
+        <!-- PAGE: LEADERBOARD -->
+        <div id="page-leaderboard" class="hidden space-y-8">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold">🏆 Таблица лидеров</h1>
+                <p class="text-gray-400 text-sm">Топ пользователей платформы по количеству опыта (XP).</p>
+            </div>
+            <div id="leaderboard-list" class="space-y-3"></div>
+        </div>
+
+        <!-- PAGE: SUPPORT -->
+        <div id="page-support" class="hidden space-y-8">
+            <div id="support-guest-guard"></div>
+            <div id="support-main-content" class="space-y-8">
+                <div class="space-y-2">
+                    <h1 class="text-3xl font-extrabold">🎧 Поддержка (Тикеты)</h1>
+                    <p class="text-gray-400 text-sm">Отправьте обращение — администратор ответит в этом же тикете.</p>
+                </div>
+                <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4">
+                    <h2 class="text-lg font-bold">Создать обращение</h2>
+                    <input type="text" id="ticket-subject-input" placeholder="Тема обращения (например: Не пришёл XP за квиз)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                    <textarea id="ticket-message-input" placeholder="Опишите проблему или вопрос..." class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-purple-500 h-24"></textarea>
+                    <button onclick="createSupportTicket()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Отправить тикет</button>
+                </div>
+                <div id="user-tickets-list" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: PROFILE -->
+        <div id="page-profile" class="hidden space-y-8">
+            <div id="profile-guest-guard"></div>
+            <div id="profile-main-content" class="space-y-8">
+                <div class="bg-cardBg border border-white/10 rounded-3xl p-8 flex flex-col md:flex-row items-center md:items-start gap-6 justify-between">
+                    <div class="flex flex-col md:flex-row items-center md:items-start gap-6 flex-1">
+                        <img id="profile-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=300" class="w-28 h-28 rounded-2xl object-cover border-2 border-purple-500/50 shrink-0">
+                        <div class="space-y-3 text-center md:text-left flex-1">
+                            <div class="flex flex-col md:flex-row md:items-center gap-2">
+                                <h1 id="profile-name" class="text-3xl font-extrabold">AkiraKai</h1>
+                                <span class="bg-purple-600/30 border border-purple-500/40 text-purple-300 text-xs font-semibold px-3 py-1 rounded-full w-fit mx-auto md:mx-0">Anime Hunter</span>
+                            </div>
+                            <div class="flex flex-wrap justify-center md:justify-start gap-3 text-xs text-gray-300">
+                                <span class="bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+                                    <i class="fa-solid fa-venus-mars text-purple-400 mr-1"></i>Пол: <strong id="profile-gender" class="text-white">Не указан</strong>
+                                </span>
+                                <span class="bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+                                    <i class="fa-solid fa-cake-candles text-pink-400 mr-1"></i>Возраст: <strong id="profile-age" class="text-white">Не указан</strong>
+                                </span>
+                            </div>
+                            <p id="profile-bio" class="text-gray-300 text-sm max-w-2xl whitespace-pre-line">Описание не заполнено.</p>
+                            <div class="w-full bg-white/10 h-2.5 rounded-full overflow-hidden max-w-xl">
+                                <div class="bg-gradient-to-r from-purple-500 to-blue-500 h-full w-[78%]"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-400 max-w-xl">
+                                <span id="profile-xp-text">0 / 10,000 XP</span>
+                                <span id="profile-level-text">Level 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row md:flex-col gap-2 shrink-0">
+                        <button onclick="toggleEditProfileForm()" class="bg-purple-600/25 hover:bg-purple-600/45 border border-purple-500/40 text-purple-200 font-semibold px-4 py-2 rounded-xl text-sm transition-all flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-pen"></i><span>Редактировать</span>
+                        </button>
+                        <button onclick="logoutUser()" class="bg-red-600/20 hover:bg-red-600/40 border border-red-500/40 text-red-300 font-semibold px-4 py-2 rounded-xl text-sm transition-all flex items-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-right-from-bracket"></i><span>Log Out</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Форма редактирования профиля -->
+                <div id="profile-edit-card" class="hidden bg-cardBg border border-purple-500/30 rounded-3xl p-6 sm:p-8 space-y-5 shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold text-purple-300">Редактирование профиля</h2>
+                        <button type="button" onclick="toggleEditProfileForm(false)" class="text-gray-400 hover:text-white text-sm cursor-pointer">
+                            <i class="fa-solid fa-xmark"></i> Закрыть
+                        </button>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center gap-5 bg-white/5 p-4 rounded-2xl border border-white/10">
+                        <img id="edit-profile-avatar-preview" src="" class="w-20 h-20 rounded-2xl object-cover border border-purple-500/40 shrink-0">
+                        <div class="space-y-2 flex-1 w-full">
+                            <label class="text-xs text-gray-300 font-semibold block">Аватарка: ссылка (URL) или файл с устройства</label>
+                            <input type="text" id="edit-profile-avatar-url" oninput="handleAvatarUrlInput(this.value)" placeholder="https://... или выберите файл ниже" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-purple-500">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <label class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer transition-all inline-flex items-center space-x-2">
+                                    <i class="fa-solid fa-upload"></i><span>Загрузить файл</span>
+                                    <input type="file" id="edit-profile-avatar-file" accept="image/*" onchange="handleAvatarFileChange(event)" class="hidden">
+                                </label>
+                                <button type="button" onclick="resetProfileAvatar()" class="text-xs text-gray-400 hover:text-white underline cursor-pointer">Сбросить аватарку</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Имя</label>
+                            <input type="text" id="edit-profile-name" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Пол</label>
+                            <select id="edit-profile-gender" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                                <option value="Не указан" class="bg-darkBg">Не указан</option>
+                                <option value="Мужской" class="bg-darkBg">Мужской</option>
+                                <option value="Женский" class="bg-darkBg">Женский</option>
+                                <option value="Другой" class="bg-darkBg">Другой</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Возраст</label>
+                            <input type="number" id="edit-profile-age" min="1" max="120" placeholder="Например, 19" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">О себе / Описание профиля</label>
+                        <textarea id="edit-profile-bio" maxlength="500" placeholder="Расскажите о себе..." class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-purple-500 h-24"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="toggleEditProfileForm(false)" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-2.5 rounded-xl text-sm cursor-pointer">Отмена</button>
+                        <button type="button" onclick="saveProfileChanges()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg cursor-pointer">Сохранить профиль</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold">My Watchlist</h2>
+                    <div id="profile-watchlist-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 6: ADMIN PANEL -->
+        <div id="page-admin" class="hidden space-y-12">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold text-red-400">🛡️ Панель Администратора</h1>
+                <p class="text-gray-400 text-sm">Управление каталогом аниме (включая YouTube-ссылки), квизами, наградами, заданиями и тикетами.</p>
+            </div>
+
+            <!-- 1. Добавить новое аниме -->
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+                <h2 class="text-xl font-bold">Добавить новое аниме</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" id="admin-title" placeholder="Название аниме" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
+                    <input type="text" id="admin-genre" placeholder="Жанр (Action, Fantasy...)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
+                    <input type="number" id="admin-eps" placeholder="Количество эпизодов" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
+                    <input type="text" id="admin-img" placeholder="Ссылка на обложку (URL)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
+                </div>
+                <input type="text" id="admin-youtube" placeholder="Ссылка на YouTube для Watch Page (https://www.youtube.com/watch?v=...)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500">
+                <textarea id="admin-desc" placeholder="Описание аниме..." class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:border-red-500 h-24"></textarea>
+                <button onclick="adminAddAnime()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-lg cursor-pointer">Добавить аниме в каталог</button>
+            </div>
+
+            <div class="space-y-4">
+                <h2 class="text-xl font-bold">Управление каталогом аниме</h2>
+                <div id="admin-anime-list" class="space-y-3"></div>
+            </div>
+
+            <hr class="border-white/10">
+
+            <!-- 2. Редактор / создатель наград -->
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+                <h2 class="text-xl font-bold text-amber-400">🎁 Награды (добавление и редактирование)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" id="admin-rew-title" placeholder="Название награды" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                    <input type="text" id="admin-rew-badge" placeholder="Бейдж (EXCLUSIVE, FREE, VIP...)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                    <input type="number" id="admin-rew-cost" placeholder="Цена в XP (например: 1500)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                    <input type="number" id="admin-rew-level" placeholder="Мин. уровень (например: 1)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                </div>
+                <input type="text" id="admin-rew-img" placeholder="Ссылка на картинку награды (URL)" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                <input type="text" id="admin-rew-desc" placeholder="Описание награды" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                <button onclick="adminAddReward()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl text-sm cursor-pointer">Добавить награду</button>
+                <div id="admin-rewards-list" class="space-y-3 pt-2"></div>
+            </div>
+
+            <hr class="border-white/10">
+
+            <!-- 3. Редактор / создатель ежедневных заданий -->
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+                <h2 class="text-xl font-bold text-emerald-400">⚡ Ежедневные задания (добавление и редактирование)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" id="admin-qst-title" placeholder="Название задания" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                    <select id="admin-qst-type" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                        <option value="watchlist" class="bg-darkBg">Добавлено аниме в Watchlist</option>
+                        <option value="profile_bio" class="bg-darkBg">Заполнено описание профиля</option>
+                        <option value="posts" class="bg-darkBg">Создано постов в Community</option>
+                        <option value="tickets" class="bg-darkBg">Отправлено тикетов в Support</option>
+                        <option value="watched_eps" class="bg-darkBg">Просмотрено эпизодов</option>
+                        <option value="custom" class="bg-darkBg">Ручное / свободное задание</option>
+                    </select>
+                    <input type="number" id="admin-qst-target" value="1" min="1" placeholder="Цель (кол-во)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                    <input type="number" id="admin-qst-xp" value="250" min="10" placeholder="Награда XP" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                </div>
+                <input type="text" id="admin-qst-desc" placeholder="Описание задания" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-400">
+                <button onclick="adminAddQuest()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-3 rounded-xl text-sm cursor-pointer">Добавить задание</button>
+                <div id="admin-quests-list" class="space-y-3 pt-2"></div>
+            </div>
+
+            <hr class="border-white/10">
+
+            <!-- 4. Тикеты поддержки -->
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+                <h2 class="text-xl font-bold text-blue-400">🎧 Обращения в поддержку</h2>
+                <div id="admin-tickets-list" class="space-y-4"></div>
+            </div>
+
+            <hr class="border-white/10">
+
+            <!-- 5. Новый квиз -->
+            <div class="bg-cardBg border border-white/10 rounded-3xl p-6 space-y-6 shadow-xl">
+                <h2 class="text-xl font-bold text-purple-400">🧠 Добавить новый Квиз</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" id="admin-quiz-title" placeholder="Название квиза" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                    <input type="text" id="admin-quiz-img" placeholder="Ссылка на обложку квиза (URL)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                </div>
+                <input type="text" id="admin-quiz-desc" placeholder="Краткое описание квиза" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-gray-300">Добавленные вопросы (<span id="temp-questions-count">0</span>):</h3>
+                    <div id="temp-questions-list" class="space-y-2"></div>
+                </div>
+                <div class="bg-white/5 p-4 rounded-2xl border border-purple-500/30 space-y-3">
+                    <input type="text" id="admin-q-text" placeholder="Текст вопроса..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-purple-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" id="admin-q-opt0" placeholder="Вариант 1" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500">
+                        <input type="text" id="admin-q-opt1" placeholder="Вариант 2" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500">
+                        <input type="text" id="admin-q-opt2" placeholder="Вариант 3" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500">
+                        <input type="text" id="admin-q-opt3" placeholder="Вариант 4" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Правильный вариант (0..3):</label>
+                            <input type="number" id="admin-q-correct" value="0" min="0" max="3" class="w-24 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                        <button type="button" onclick="adminAddQuestionToTemp()" class="bg-purple-600/30 hover:bg-purple-600 border border-purple-500 text-purple-200 hover:text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer">+ Добавить вопрос</button>
+                    </div>
+                </div>
+                <button onclick="adminSaveFullQuiz()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg cursor-pointer">Сохранить и опубликовать квиз</button>
+            </div>
+
+            <div class="space-y-4">
+                <h2 class="text-xl font-bold">Управление существующими квизами</h2>
+                <div id="admin-quiz-list" class="space-y-3"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- EDIT ANIME MODAL (ADMIN) -->
+    <div id="edit-anime-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-white/10 rounded-3xl p-6 sm:p-8 max-w-xl w-full relative space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditAnimeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-2xl font-extrabold text-amber-400">Редактировать аниме</h2>
+            <input type="hidden" id="edit-anime-id">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Название</label>
+                    <input type="text" id="edit-anime-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Жанр</label>
+                    <input type="text" id="edit-anime-genre" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Эпизодов</label>
+                    <input type="number" id="edit-anime-eps" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Рейтинг</label>
+                    <input type="number" step="0.1" min="0" max="10" id="edit-anime-rating" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Тег</label>
+                    <input type="text" id="edit-anime-tag" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Текущий эпизод</label>
+                    <input type="text" id="edit-anime-epname" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">YouTube URL (для Watch Page)</label>
+                <input type="text" id="edit-anime-youtube" placeholder="https://www.youtube.com/watch?v=..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Ссылка на картинку (URL)</label>
+                <input type="text" id="edit-anime-img" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Описание</label>
+                <textarea id="edit-anime-desc" class="w-full bg-white/5 border border-white/10 rounded-xl p-3.5 text-sm h-24"></textarea>
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button type="button" onclick="closeEditAnimeModal()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-2.5 rounded-xl text-sm cursor-pointer">Отмена</button>
+                <button type="button" onclick="adminSaveEditedAnime()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT REWARD MODAL (ADMIN) -->
+    <div id="edit-reward-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-white/10 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative space-y-4 shadow-2xl">
+            <button onclick="closeEditRewardModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-2xl font-extrabold text-amber-400">Редактировать награду</h2>
+            <input type="hidden" id="edit-rew-id">
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Название</label>
+                <input type="text" id="edit-rew-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Цена XP</label>
+                    <input type="number" id="edit-rew-cost" min="0" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Мин. уровень</label>
+                    <input type="number" id="edit-rew-level" min="1" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Бейдж</label>
+                    <input type="text" id="edit-rew-badge" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Картинка URL</label>
+                <input type="text" id="edit-rew-img" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Описание</label>
+                <input type="text" id="edit-rew-desc" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button type="button" onclick="closeEditRewardModal()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-2.5 rounded-xl text-sm cursor-pointer">Отмена</button>
+                <button type="button" onclick="adminSaveEditedReward()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT QUEST MODAL (ADMIN) -->
+    <div id="edit-quest-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-white/10 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative space-y-4 shadow-2xl">
+            <button onclick="closeEditQuestModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-2xl font-extrabold text-emerald-400">Редактировать задание</h2>
+            <input type="hidden" id="edit-qst-id">
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Название задания</label>
+                <input type="text" id="edit-qst-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Тип условия</label>
+                    <select id="edit-qst-type" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                        <option value="watchlist" class="bg-darkBg">Watchlist</option>
+                        <option value="profile_bio" class="bg-darkBg">Bio профиля</option>
+                        <option value="posts" class="bg-darkBg">Посты</option>
+                        <option value="tickets" class="bg-darkBg">Тикеты</option>
+                        <option value="watched_eps" class="bg-darkBg">Серии</option>
+                        <option value="custom" class="bg-darkBg">Свободное</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Цель</label>
+                    <input type="number" id="edit-qst-target" min="1" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Награда XP</label>
+                    <input type="number" id="edit-qst-xp" min="10" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Описание</label>
+                <input type="text" id="edit-qst-desc" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button type="button" onclick="closeEditQuestModal()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-2.5 rounded-xl text-sm cursor-pointer">Отмена</button>
+                <button type="button" onclick="adminSaveEditedQuest()" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT QUIZ MODAL (ADMIN) -->
+    <div id="edit-quiz-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-white/10 rounded-3xl p-6 sm:p-8 max-w-2xl w-full relative space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditQuizModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-2xl font-extrabold text-purple-400">Редактировать квиз</h2>
+            <input type="hidden" id="edit-quiz-id">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Название квиза</label>
+                    <input type="text" id="edit-quiz-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Обложка URL</label>
+                    <input type="text" id="edit-quiz-img" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs text-gray-400 block mb-1">Описание</label>
+                <input type="text" id="edit-quiz-desc" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm">
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-sm font-bold text-gray-300">Вопросы (<span id="edit-quiz-q-count">0</span>):</h3>
+                <div id="edit-quiz-q-list" class="space-y-2"></div>
+            </div>
+            <div class="bg-white/5 p-4 rounded-2xl border border-purple-500/30 space-y-3">
+                <input type="text" id="edit-q-text" placeholder="Текст вопроса..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input type="text" id="edit-q-opt0" placeholder="Вариант 1" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                    <input type="text" id="edit-q-opt1" placeholder="Вариант 2" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                    <input type="text" id="edit-q-opt2" placeholder="Вариант 3" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                    <input type="text" id="edit-q-opt3" placeholder="Вариант 4" class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Правильный вариант (0..3):</label>
+                        <input type="number" id="edit-q-correct" value="0" min="0" max="3" class="w-24 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
+                    </div>
+                    <button type="button" onclick="editQuizAddQuestion()" class="bg-purple-600/30 hover:bg-purple-600 border border-purple-500 text-purple-200 hover:text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer">+ Добавить вопрос</button>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button type="button" onclick="closeEditQuizModal()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-2.5 rounded-xl text-sm cursor-pointer">Отмена</button>
+                <button type="button" onclick="adminSaveEditedQuiz()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-2.5 rounded-xl text-sm cursor-pointer">Сохранить квиз</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-white/10 rounded-3xl p-8 max-w-md w-full relative space-y-6 shadow-2xl">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center space-y-2">
+                <h2 id="auth-modal-title" class="text-2xl font-extrabold">Welcome to SEKAI</h2>
+                <p class="text-xs text-gray-400">Sign in or create an account to unlock all features</p>
+            </div>
+            <div class="flex bg-white/5 p-1 rounded-xl">
+                <button onclick="switchAuthTab('login')" id="tab-login-btn" class="flex-1 py-2 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white cursor-pointer">Sign In</button>
+                <button onclick="switchAuthTab('register')" id="tab-register-btn" class="flex-1 py-2 rounded-lg text-xs font-bold transition-all text-gray-400 cursor-pointer">Register</button>
+            </div>
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="register-fields" class="space-y-4 hidden">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Your Name</label>
+                        <input type="text" id="reg-name" placeholder="Alim" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Email Address</label>
+                    <input type="email" id="auth-email" required placeholder="user@sekai.anime" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Password</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500">
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg cursor-pointer">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=300';
+        const ALL_PAGES = ['home', 'anime', 'watch', 'quiz', 'quests', 'rewards', 'community', 'leaderboard', 'support', 'profile', 'admin'];
+
+        let catalogAnimeList = [];
+        let quizzesData = [];
+        let rewardsData = [];
+        let questsData = [];
+        let ticketsData = [];
+        let postsData = [];
+        let tempQuizQuestions = [];
+        let editingQuizQuestions = [];
+        let currentUser = JSON.parse(localStorage.getItem('sekai_user')) || { isLoggedIn: false };
+        let draftAvatarValue = '';
+
+        let activeWatchAnime = null;
+        let activeWatchEpisode = 1;
+
+        function calcLevel(xp) {
+            return Math.max(1, Math.floor((Number(xp) || 0) / 1000) + 1);
+        }
+
+        async function syncUserToServer(partial = {}) {
+            if (!currentUser || !currentUser.isLoggedIn) return;
+            currentUser.level = calcLevel(currentUser.xp);
+            localStorage.setItem('sekai_user', JSON.stringify(currentUser));
+            try {
+                const res = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: currentUser.id,
+                        email: currentUser.email,
+                        name: currentUser.name,
+                        avatar: currentUser.avatar || DEFAULT_AVATAR,
+                        gender: currentUser.gender || 'Не указан',
+                        age: currentUser.age ?? null,
+                        bio: currentUser.bio || '',
+                        xp: currentUser.xp ?? 0,
+                        level: currentUser.level,
+                        watchlist: currentUser.watchlist || [],
+                        claimedQuests: currentUser.claimedQuests || [],
+                        watchedEpisodes: currentUser.watchedEpisodes || [],
+                        claimedRewards: currentUser.claimedRewards || [],
+                        ...partial
+                    })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    currentUser = { ...currentUser, ...data.user, isLoggedIn: true };
+                    localStorage.setItem('sekai_user', JSON.stringify(currentUser));
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function saveUserState(syncServer = false) {
+            if (currentUser && currentUser.isLoggedIn) {
+                currentUser.level = calcLevel(currentUser.xp);
+            }
+            localStorage.setItem('sekai_user', JSON.stringify(currentUser));
+            renderHeader();
+            checkGuards();
+            renderWatchlist();
+            if (syncServer) syncUserToServer();
+        }
+
+        async function loadAllData() {
+            const [aRes, qRes, rRes, qtRes, tRes, pRes] = await Promise.allSettled([
+                fetch('/api/anime').then(r => r.json()),
+                fetch('/api/quizzes').then(r => r.json()),
+                fetch('/api/rewards').then(r => r.json()),
+                fetch('/api/quests').then(r => r.json()),
+                fetch('/api/tickets').then(r => r.json()),
+                fetch('/api/posts').then(r => r.json())
+            ]);
+            catalogAnimeList = aRes.status === 'fulfilled' && Array.isArray(aRes.value) ? aRes.value : [];
+            quizzesData = qRes.status === 'fulfilled' && Array.isArray(qRes.value) ? qRes.value : [];
+            rewardsData = rRes.status === 'fulfilled' && Array.isArray(rRes.value) ? rRes.value : [];
+            questsData = qtRes.status === 'fulfilled' && Array.isArray(qtRes.value) ? qtRes.value : [];
+            ticketsData = tRes.status === 'fulfilled' && Array.isArray(tRes.value) ? tRes.value : [];
+            postsData = pRes.status === 'fulfilled' && Array.isArray(pRes.value) ? pRes.value : [];
+        }
+
+        function switchPage(pageId) {
+            ALL_PAGES.forEach(p => {
+                const el = document.getElementById(`page-${p}`);
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById(`nav-${p}`);
+                if (nav) nav.className = "px-4 py-2 rounded-full transition-all text-gray-400 hover:text-white hover:bg-white/5 cursor-pointer";
+            });
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) target.classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) activeNav.className = "px-4 py-2 rounded-full transition-all bg-purple-600 text-white shadow cursor-pointer";
+
+            if (pageId === 'home') renderHomeTrending();
+            if (pageId === 'anime') renderCatalog(catalogAnimeList);
+            if (pageId === 'quiz') renderQuizHub();
+            if (pageId === 'quests') renderQuestsPage();
+            if (pageId === 'rewards') renderRewardsPage();
+            if (pageId === 'community') renderCommunityPage();
+            if (pageId === 'leaderboard') renderLeaderboardPage();
+            if (pageId === 'support') renderSupportPage();
+            if (pageId === 'profile') toggleEditProfileForm(false);
+            if (pageId === 'admin') {
+                if (!currentUser || !currentUser.isAdmin) {
+                    alert('Доступ запрещен! Нужны права администратора.');
+                    switchPage('home');
+                    return;
+                }
+                renderAdminAnimeList();
+                renderAdminRewardsList();
+                renderAdminQuestsList();
+                renderAdminTicketsList();
+                renderAdminQuizList();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- YOUTUBE EMBED HELPER & WATCH PAGE ---
+        function toYoutubeEmbedUrl(url) {
+            if (!url) return '';
+            const str = String(url).trim();
+            const shortMatch = str.match(/youtu\.be\/([a-zA-Z0-9_-]{6,})/);
+            if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+            const watchMatch = str.match(/[?&]v=([a-zA-Z0-9_-]{6,})/);
+            if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+            const shortsMatch = str.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/);
+            if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+            const embedMatch = str.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{6,})/);
+            if (embedMatch) return `https://www.youtube.com/embed/${embedMatch[1]}`;
+            return '';
+        }
+
+        function openWatchByIndex(index) {
+            const anime = catalogAnimeList[index];
+            if (!anime) return;
+            openWatchPage(anime.id);
+        }
+
+        function openWatchPage(animeId) {
+            const anime = catalogAnimeList.find(a => Number(a.id) === Number(animeId)) || catalogAnimeList[0];
+            if (!anime) return;
+            activeWatchAnime = anime;
+            activeWatchEpisode = 1;
+            switchPage('watch');
+            renderWatchView();
+        }
+
+        function renderWatchView() {
+            if (!activeWatchAnime) return;
+            const a = activeWatchAnime;
+            const totalEps = Number(a.eps) || 12;
+            const embedUrl = toYoutubeEmbedUrl(a.youtubeUrl);
+
+            document.getElementById('watch-episode-badge').innerText = `Episode ${activeWatchEpisode} / ${totalEps}`;
+            document.getElementById('watch-title').innerText = a.title;
+            document.getElementById('watch-meta').innerText = `${a.genre} • ${totalEps} eps • Rating ${a.rating}`;
+            document.getElementById('watch-desc').innerText = a.desc || '';
+
+            const addBtn = document.getElementById('watch-add-btn');
+            addBtn.setAttribute(
+                'onclick',
+                `addToList('${a.title.replace(/'/g, "\\'")}', ${totalEps}, '${String(a.genre || '').replace(/'/g, "\\'")}', ${a.rating}, '${String(a.img || '').replace(/'/g, "\\'")}')`
+            );
+
+            const playerWrap = document.getElementById('watch-player-wrapper');
+            if (embedUrl) {
+                playerWrap.innerHTML = `<iframe src="${embedUrl}" title="${a.title}" class="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                playerWrap.innerHTML = `
+                    <div class="w-full h-full relative flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-purple-950/60 to-black">
+                        <img src="${a.img}" class="absolute inset-0 w-full h-full object-cover opacity-20">
+                        <div class="relative z-10 space-y-2 max-w-md">
+                            <div class="text-3xl">🎬</div>
+                            <div class="font-bold text-lg">YouTube-ссылка для этого аниме ещё не указана</div>
+                            <p class="text-xs text-gray-300">Администратор может добавить или изменить YouTube-ссылку в разделе «Управление каталогом аниме».</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const epList = document.getElementById('watch-episodes-list');
+            const watchedSet = new Set((currentUser && currentUser.watchedEpisodes) || []);
+            epList.innerHTML = Array.from({ length: totalEps }, (_, i) => i + 1).map(epNum => {
+                const isSelected = epNum === activeWatchEpisode;
+                const isWatched = watchedSet.has(`${a.id}:${epNum}`);
+                return `
+                    <button onclick="selectWatchEpisode(${epNum})" class="py-2.5 px-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                        isSelected
+                            ? 'bg-purple-600 border-purple-400 text-white'
+                            : isWatched
+                                ? 'bg-emerald-600/20 border-emerald-500/40 text-emerald-300'
+                                : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
+                    }">
+                        Ep ${epNum} ${isWatched ? '✓' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectWatchEpisode(epNum) {
+            activeWatchEpisode = epNum;
+            renderWatchView();
+        }
+
+        async function markCurrentEpisodeWatched() {
+            if (!currentUser || !currentUser.isLoggedIn) {
+                openAuthModal('login');
+                return;
+            }
+            if (!activeWatchAnime) return;
+            if (!Array.isArray(currentUser.watchedEpisodes)) currentUser.watchedEpisodes = [];
+            const key = `${activeWatchAnime.id}:${activeWatchEpisode}`;
+            if (currentUser.watchedEpisodes.includes(key)) {
+                alert('Вы уже получили XP за этот эпизод!');
+                return;
+            }
+            currentUser.watchedEpisodes.push(key);
+            currentUser.xp = (Number(currentUser.xp) || 0) + 100;
+            saveUserState(true);
+            renderWatchView();
+            alert(`Эпизод ${activeWatchEpisode} отмечен как просмотренный! +100 XP`);
+        }
+
+        // --- HOME & CATALOG ---
+        function renderHomeTrending() {
+            const grid = document.getElementById('home-trending-grid');
+            grid.innerHTML = catalogAnimeList.slice(0, 6).map(anime => `
+                <div class="bg-cardHover rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/50 transition-all group">
+                    <div class="h-56 overflow-hidden relative cursor-pointer" onclick="openWatchPage(${anime.id})">
+                        <img src="${anime.img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">${anime.tag}</span>
+                        <span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur text-yellow-400 text-xs px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-star text-[10px]"></i> ${anime.rating}</span>
+                    </div>
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="cursor-pointer" onclick="openWatchPage(${anime.id})">
+                            <h3 class="font-bold text-sm truncate max-w-[120px]">${anime.title}</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">${anime.eps} eps • ${anime.genre}</p>
+                        </div>
+                        <button onclick="addToList('${anime.title.replace(/'/g, "\\'")}', ${anime.eps}, '${String(anime.genre || '').replace(/'/g, "\\'")}', ${anime.rating}, '${String(anime.img || '').replace(/'/g, "\\'")}')" class="text-purple-400 hover:text-white p-2 cursor-pointer" title="Add to List">
+                            <i class="fa-solid fa-plus-circle text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCatalog(list) {
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = list.map(anime => `
+                <div class="bg-cardHover rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="h-52 overflow-hidden relative cursor-pointer" onclick="openWatchPage(${anime.id})">
+                            <img src="${anime.img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">${anime.tag}</span>
+                            <span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur text-yellow-400 text-xs px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-star text-[10px]"></i> ${anime.rating}</span>
+                        </div>
+                        <div class="p-4 space-y-1 cursor-pointer" onclick="openWatchPage(${anime.id})">
+                            <h3 class="font-bold text-sm truncate">${anime.title}</h3>
+                            <p class="text-xs text-gray-400">${anime.eps} eps • ${anime.genre}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 space-y-2">
+                        <button onclick="openWatchPage(${anime.id})" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl cursor-pointer">Смотреть</button>
+                        <button onclick="addToList('${anime.title.replace(/'/g, "\\'")}', ${anime.eps}, '${String(anime.genre || '').replace(/'/g, "\\'")}', ${anime.rating}, '${String(anime.img || '').replace(/'/g, "\\'")}')" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold py-2 rounded-xl cursor-pointer">+ Watchlist</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById('anime-search-input').value.toLowerCase();
+            const sortBy = document.getElementById('anime-sort-select').value;
+            let filtered = catalogAnimeList.filter(a => a.title.toLowerCase().includes(query) || String(a.genre || '').toLowerCase().includes(query));
+            if (sortBy === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+            else if (sortBy === 'title') filtered.sort((a, b) => a.title.localeCompare(b.title));
+            renderCatalog(filtered);
+        }
+
+        function addToList(title, eps, genre, rating, img) {
+            if (!currentUser || !currentUser.isLoggedIn) {
+                openAuthModal('login');
+                return;
+            }
+            if (!Array.isArray(currentUser.watchlist)) currentUser.watchlist = [];
+            if (currentUser.watchlist.some(item => item.title === title)) {
+                alert(`"${title}" уже в вашем Watchlist!`);
+                return;
+            }
+            currentUser.watchlist.push({ title, eps, genre, rating, img });
+            saveUserState(true);
+            alert(`"${title}" добавлен в Watchlist!`);
+        }
+
+        function renderWatchlist() {
+            const grid = document.getElementById('profile-watchlist-grid');
+            if (!grid) return;
+            if (!currentUser.watchlist || currentUser.watchlist.length === 0) {
+                grid.innerHTML = `<p class="text-xs text-gray-400 col-span-3">Ваш Watchlist пуст.</p>`;
+                return;
+            }
+            grid.innerHTML = currentUser.watchlist.map((item, index) => `
+                <div class="bg-cardBg border border-white/10 p-4 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <img src="${item.img}" class="w-12 h-12 rounded-xl object-cover">
+                        <div>
+                            <h4 class="font-bold text-sm truncate max-w-[160px]">${item.title}</h4>
+                            <p class="text-xs text-yellow-400"><i class="fa-solid fa-star"></i> ${item.rating} • ${item.genre}</p>
+                        </div>
+                    </div>
+                    <button onclick="removeFromList(${index})" class="text-red-400 hover:text-red-300 text-xs p-2 cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromList(index) {
+            currentUser.watchlist.splice(index, 1);
+            saveUserState(true);
+        }
+
+        // --- DAILY QUESTS ---
+        function getQuestProgress(quest) {
+            const target = Math.max(1, Number(quest.target) || 1);
+            let current = 0;
+            if (quest.type === 'watchlist') current = (currentUser.watchlist || []).length;
+            else if (quest.type === 'profile_bio') current = (currentUser.bio && currentUser.bio.trim().length > 0) ? 1 : 0;
+            else if (quest.type === 'posts') current = postsData.filter(p => String(p.userId) === String(currentUser.id)).length;
+            else if (quest.type === 'tickets') current = ticketsData.filter(t => String(t.userId) === String(currentUser.id)).length;
+            else if (quest.type === 'watched_eps') current = (currentUser.watchedEpisodes || []).length;
+            else current = target;
+            return { current: Math.min(target, current), target, done: current >= target };
+        }
+
+        function renderQuestsPage() {
+            const grid = document.getElementById('quests-list-grid');
+            if (!grid || !currentUser.isLoggedIn) return;
+            const claimed = new Set(currentUser.claimedQuests || []);
+            if (!questsData.length) {
+                grid.innerHTML = `<p class="text-sm text-gray-400">Ежедневных заданий пока нет.</p>`;
+                return;
+            }
+            grid.innerHTML = questsData.map(q => {
+                const prog = getQuestProgress(q);
+                const isClaimed = claimed.has(String(q.id));
+                const pct = Math.round((prog.current / prog.target) * 100);
+                return `
+                    <div class="bg-cardBg border border-white/10 rounded-2xl p-5 flex flex-col justify-between gap-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">${q.daily ? 'DAILY' : 'QUEST'}</span>
+                                <span class="text-xs font-extrabold text-yellow-400">+${q.rewardXp} XP</span>
+                            </div>
+                            <h3 class="font-bold text-lg">${q.title}</h3>
+                            <p class="text-xs text-gray-400">${q.desc}</p>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full" style="width:${pct}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-400">Прогресс: ${prog.current} / ${prog.target}</div>
+                        </div>
+                        <button onclick="claimQuestReward('${String(q.id).replace(/'/g, "\\'")}')" ${isClaimed || !prog.done ? 'disabled' : ''} class="w-full py-2.5 rounded-xl text-xs font-bold transition-all ${
+                            isClaimed
+                                ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                                : prog.done
+                                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer'
+                                    : 'bg-white/5 text-gray-400 cursor-not-allowed'
+                        }">
+                            ${isClaimed ? 'Получено ✓' : prog.done ? `Забрать +${q.rewardXp} XP` : 'В процессе'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function claimQuestReward(questId) {
+            const quest = questsData.find(q => String(q.id) === String(questId));
+            if (!quest) return;
+            if (!Array.isArray(currentUser.claimedQuests)) currentUser.claimedQuests = [];
+            if (currentUser.claimedQuests.includes(String(quest.id))) return;
+            const prog = getQuestProgress(quest);
+            if (!prog.done) return;
+
+            currentUser.claimedQuests.push(String(quest.id));
+            currentUser.xp = (Number(currentUser.xp) || 0) + (Number(quest.rewardXp) || 0);
+            saveUserState(true);
+            renderQuestsPage();
+            alert(`Задание выполнено! Начислено +${quest.rewardXp} XP.`);
+        }
+
+        // --- REWARDS ---
+        function renderRewardsPage() {
+            const grid = document.getElementById('rewards-grid');
+            if (!grid) return;
+            if (!rewardsData.length) {
+                grid.innerHTML = `<p class="text-sm text-gray-400 col-span-3">Наград пока нет. Добавьте их в админ-панели.</p>`;
+                return;
+            }
+            grid.innerHTML = rewardsData.map(r => {
+                const levelOk = (currentUser.level || 1) >= (r.minLevel || 1);
+                const xpOk = (currentUser.xp || 0) >= (r.cost || 0);
+                return `
+                    <div class="bg-cardBg border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-48 relative overflow-hidden">
+                                <img src="${r.img}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600'">
+                                <span class="absolute top-3 left-3 bg-amber-500 text-black font-bold text-xs px-2.5 py-1 rounded">${r.badge || 'REWARD'}</span>
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <h3 class="font-bold text-lg">${r.title}</h3>
+                                <p class="text-xs text-gray-400">${r.desc}</p>
+                                <p class="text-[11px] text-purple-300">Требуемый уровень: ${r.minLevel || 1}</p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0 flex items-center justify-between border-t border-white/5 mt-4">
+                            <span class="text-yellow-400 font-bold text-sm">${r.cost > 0 ? `⚡ ${Number(r.cost).toLocaleString()} XP` : 'FREE'}</span>
+                            <button onclick="redeemRewardById('${String(r.id).replace(/'/g, "\\'")}')" class="${levelOk && xpOk ? 'bg-purple-600 hover:bg-purple-500 text-white' : 'bg-white/10 text-gray-300'} font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer">
+                                ${!levelOk ? `Requires Lv.${r.minLevel}` : r.cost > 0 ? 'Redeem Now' : 'Claim'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function redeemRewardById(rewardId) {
+            const reward = rewardsData.find(r => String(r.id) === String(rewardId));
+            if (!reward) return;
+            if ((currentUser.level || 1) < (reward.minLevel || 1)) {
+                alert(`Требуется уровень ${reward.minLevel} или выше!`);
+                return;
+            }
+            const cost = Number(reward.cost) || 0;
+            if ((currentUser.xp || 0) < cost) {
+                alert('Недостаточно XP для получения награды.');
+                return;
+            }
+            currentUser.xp = (Number(currentUser.xp) || 0) - cost;
+            if (!Array.isArray(currentUser.claimedRewards)) currentUser.claimedRewards = [];
+            currentUser.claimedRewards.push({ id: reward.id, title: reward.title, at: new Date().toISOString() });
+            saveUserState(true);
+            renderRewardsPage();
+            alert(`Награда "${reward.title}" получена!`);
+        }
+
+        // --- COMMUNITY ---
+        function populatePostAnimeSelect() {
+            const sel = document.getElementById('post-anime-select');
+            if (!sel) return;
+            sel.innerHTML = `<option value="Общее обсуждение" class="bg-darkBg">Общее обсуждение</option>` +
+                catalogAnimeList.map(a => `<option value="${a.title.replace(/"/g, '&quot;')}" class="bg-darkBg">${a.title}</option>`).join('');
+        }
+
+        function renderCommunityPage() {
+            populatePostAnimeSelect();
+            const list = document.getElementById('community-posts-list');
+            if (!list) return;
+            if (!postsData.length) {
+                list.innerHTML = `<p class="text-sm text-gray-400">Постов пока нет. Будьте первым!</p>`;
+                return;
+            }
+            list.innerHTML = postsData.map(p => `
+                <div class="bg-cardBg border border-white/10 rounded-2xl p-5 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center space-x-3">
+                            <img src="${p.userAvatar || DEFAULT_AVATAR}" class="w-9 h-9 rounded-full object-cover">
+                            <div>
+                                <div class="text-sm font-bold">${p.userName}</div>
+                                <div class="text-[11px] text-purple-300">${p.animeTitle}</div>
+                            </div>
+                        </div>
+                        ${currentUser && currentUser.isAdmin ? `<button onclick="adminDeletePost('${String(p.id).replace(/'/g, "\\'")}')" class="text-xs text-red-400 hover:text-red-300 cursor-pointer">Удалить</button>` : ''}
+                    </div>
+                    <p class="text-sm text-gray-200 whitespace-pre-line">${p.text}</p>
+                    <div class="pt-1">
+                        <button onclick="likePost('${String(p.id).replace(/'/g, "\\'")}')" class="text-xs bg-white/5 hover:bg-pink-600/20 border border-white/10 px-3 py-1.5 rounded-xl text-pink-300 font-semibold cursor-pointer">
+                            ♥ ${p.likes || 0}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function createCommunityPost() {
+            if (!currentUser || !currentUser.isLoggedIn) {
+                openAuthModal('login');
+                return;
+            }
+            const animeTitle = document.getElementById('post-anime-select').value;
+            const text = document.getElementById('post-text-input').value.trim();
+            if (!text) {
+                alert('Введите текст поста!');
+                return;
+            }
+            const res = await fetch('/api/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    userAvatar: currentUser.avatar || DEFAULT_AVATAR,
+                    animeTitle,
+                    text
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка публикации');
+            postsData.unshift(data);
+            document.getElementById('post-text-input').value = '';
+            renderCommunityPage();
+        }
+
+        async function likePost(postId) {
+            const res = await fetch(`/api/posts/${encodeURIComponent(postId)}/like`, { method: 'POST' });
+            if (res.ok) {
+                const updated = await res.json();
+                const idx = postsData.findIndex(p => String(p.id) === String(postId));
+                if (idx !== -1) postsData[idx] = updated;
+                renderCommunityPage();
+            }
+        }
+
+        async function adminDeletePost(postId) {
+            const res = await fetch(`/api/posts/${encodeURIComponent(postId)}`, { method: 'DELETE' });
+            if (res.ok) {
+                postsData = postsData.filter(p => String(p.id) !== String(postId));
+                renderCommunityPage();
+            }
+        }
+
+        // --- LEADERBOARD ---
+
+        async function renderLeaderboardPage() {
+            const list = document.getElementById('leaderboard-list');
+            if (!list) return;
+            try {
+                const res = await fetch('/api/leaderboard');
+                const users = res.ok ? await res.json() : [];
+                const visibleUsers = (Array.isArray(users) ? users : []).filter(u => !u.isAdmin);
+                list.innerHTML = visibleUsers.map((u, idx) => {
+                    const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+                    return `
+                        <div class="bg-cardBg border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
+                            <div class="flex items-center space-x-4 min-w-0">
+                                <span class="text-lg font-extrabold w-8 text-center shrink-0">${medal}</span>
+                                <img src="${u.avatar || DEFAULT_AVATAR}" class="w-11 h-11 rounded-xl object-cover shrink-0">
+                                <div class="min-w-0">
+                                    <div class="font-bold text-sm truncate">${u.name}</div>
+                                    <div class="text-xs text-gray-400 truncate">${u.bio || 'Участник SEKAI'}</div>
+                                </div>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="text-sm font-extrabold text-yellow-400">${Number(u.xp || 0).toLocaleString()} XP</div>
+                                <div class="text-xs text-purple-300">Level ${u.level || 1}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                list.innerHTML = `<p class="text-sm text-gray-400">Ошибка загрузки таблицы лидеров.</p>`;
+            }
+        }
+        // --- SUPPORT ---
+        function renderSupportPage() {
+            const list = document.getElementById('user-tickets-list');
+            if (!list || !currentUser.isLoggedIn) return;
+            const mine = ticketsData.filter(t => String(t.userId) === String(currentUser.id));
+            if (!mine.length) {
+                list.innerHTML = `<p class="text-sm text-gray-400">У вас пока нет обращений.</p>`;
+                return;
+            }
+            list.innerHTML = mine.map(t => `
+                <div class="bg-cardBg border border-white/10 rounded-2xl p-5 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-bold text-base">${t.subject}</h3>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full ${t.status === 'Решён' ? 'bg-emerald-600/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${t.status}</span>
+                    </div>
+                    <div class="space-y-2">
+                        ${(t.messages || []).map(m => `
+                            <div class="p-3 rounded-xl text-xs ${m.role === 'admin' ? 'bg-purple-600/20 border border-purple-500/30' : 'bg-white/5'}">
+                                <div class="font-bold mb-1 ${m.role === 'admin' ? 'text-purple-300' : 'text-gray-300'}">${m.sender}</div>
+                                <div class="text-gray-200 whitespace-pre-line">${m.text}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function createSupportTicket() {
+            if (!currentUser || !currentUser.isLoggedIn) {
+                openAuthModal('login');
+                return;
+            }
+            const subject = document.getElementById('ticket-subject-input').value.trim();
+            const message = document.getElementById('ticket-message-input').value.trim();
+            if (!subject || !message) {
+                alert('Заполните тему и сообщение!');
+                return;
+            }
+            const res = await fetch('/api/tickets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    subject,
+                    message
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка отправки');
+            ticketsData.unshift(data);
+            document.getElementById('ticket-subject-input').value = '';
+            document.getElementById('ticket-message-input').value = '';
+            renderSupportPage();
+            alert('Обращение отправлено!');
+        }
+
+        // --- HEADER, GUARDS & PROFILE ---
+        function renderHeader() {
+            const container = document.getElementById('user-header-container');
+            if (currentUser && currentUser.isLoggedIn) {
+                const adminBtn = currentUser.isAdmin
+                    ? `<button onclick="switchPage('admin')" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow cursor-pointer">Админ</button>`
+                    : '';
+                const avatarSrc = currentUser.avatar || DEFAULT_AVATAR;
+                container.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        ${adminBtn}
+                        <div onclick="switchPage('profile')" class="flex items-center space-x-2.5 bg-white/5 hover:bg-white/10 border border-white/10 px-2.5 py-1.5 rounded-full cursor-pointer transition-all">
+                            <img src="${avatarSrc}" class="w-7 h-7 rounded-full object-cover border border-purple-500/40" onerror="this.src='${DEFAULT_AVATAR}'">
+                            <span class="text-xs font-bold bg-purple-600 px-2 py-0.5 rounded-full">Lv.${currentUser.level || 1}</span>
+                            <span class="text-sm font-semibold pr-1">${currentUser.name}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-4 py-2 rounded-full text-sm transition-all shadow cursor-pointer">
+                        Sign In / Register
+                    </button>
+                `;
+            }
+        }
+
+        function checkGuards() {
+            const isLogged = Boolean(currentUser && currentUser.isLoggedIn);
+            ['quiz', 'quests', 'rewards', 'support', 'profile'].forEach(sec => {
+                const guard = document.getElementById(`${sec}-guest-guard`);
+                const content = document.getElementById(`${sec}-main-content`);
+                if (!guard || !content) return;
+                if (!isLogged) {
+                    guard.innerHTML = guestPromptHTML(sec.toUpperCase());
+                    content.classList.add('hidden');
+                } else {
+                    guard.innerHTML = '';
+                    content.classList.remove('hidden');
+                }
+            });
+
+            if (isLogged) {
+                document.getElementById('rewards-xp-display').innerText = `${Number(currentUser.xp || 0).toLocaleString()} XP`;
+                document.getElementById('rewards-level-display').innerText = `Level ${currentUser.level || 1}`;
+                document.getElementById('profile-avatar').src = currentUser.avatar || DEFAULT_AVATAR;
+                document.getElementById('profile-name').innerText = currentUser.name;
+                document.getElementById('profile-gender').innerText = currentUser.gender || 'Не указан';
+                document.getElementById('profile-age').innerText = (currentUser.age !== null && currentUser.age !== undefined && currentUser.age !== '') ? `${currentUser.age}` : 'Не указан';
+                document.getElementById('profile-bio').innerText = (currentUser.bio && currentUser.bio.trim()) ? currentUser.bio : 'Описание не заполнено.';
+                document.getElementById('profile-xp-text').innerText = `${Number(currentUser.xp || 0).toLocaleString()} / 10,000 XP`;
+                document.getElementById('profile-level-text').innerText = `Level ${currentUser.level || 1}`;
+            }
+        }
+
+        function toggleEditProfileForm(forceState) {
+            const card = document.getElementById('profile-edit-card');
+            if (!card) return;
+            const shouldOpen = typeof forceState === 'boolean' ? forceState : card.classList.contains('hidden');
+            if (shouldOpen) {
+                const avatar = currentUser.avatar || DEFAULT_AVATAR;
+                draftAvatarValue = avatar;
+                document.getElementById('edit-profile-name').value = currentUser.name || '';
+                document.getElementById('edit-profile-gender').value = currentUser.gender || 'Не указан';
+                document.getElementById('edit-profile-age').value = currentUser.age ?? '';
+                document.getElementById('edit-profile-bio').value = currentUser.bio || '';
+                document.getElementById('edit-profile-avatar-url').value = avatar.startsWith('data:') ? '' : avatar;
+                document.getElementById('edit-profile-avatar-file').value = '';
+                document.getElementById('edit-profile-avatar-preview').src = avatar;
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        }
+
+        function handleAvatarUrlInput(val) {
+            draftAvatarValue = val.trim() || DEFAULT_AVATAR;
+            document.getElementById('edit-profile-avatar-preview').src = draftAvatarValue;
+        }
+
+        function handleAvatarFileChange(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) return;
+            if (file.size > 4 * 1024 * 1024) return alert('Файл слишком большой (макс. 4 МБ).');
+            const reader = new FileReader();
+            reader.onload = () => {
+                draftAvatarValue = String(reader.result || '');
+                document.getElementById('edit-profile-avatar-url').value = '';
+                document.getElementById('edit-profile-avatar-preview').src = draftAvatarValue;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetProfileAvatar() {
+            draftAvatarValue = DEFAULT_AVATAR;
+            document.getElementById('edit-profile-avatar-url').value = DEFAULT_AVATAR;
+            document.getElementById('edit-profile-avatar-file').value = '';
+            document.getElementById('edit-profile-avatar-preview').src = DEFAULT_AVATAR;
+        }
+
+        async function saveProfileChanges() {
+            const name = document.getElementById('edit-profile-name').value.trim();
+            const gender = document.getElementById('edit-profile-gender').value;
+            const ageRaw = document.getElementById('edit-profile-age').value.trim();
+            const bio = document.getElementById('edit-profile-bio').value.trim();
+            const urlInputVal = document.getElementById('edit-profile-avatar-url').value.trim();
+            const avatarToSave = urlInputVal || draftAvatarValue || currentUser.avatar || DEFAULT_AVATAR;
+            if (!name) return alert('Имя не может быть пустым!');
+            const age = ageRaw === '' ? null : Number(ageRaw);
+            if (age !== null && (!Number.isFinite(age) || age < 1 || age > 120)) return alert('Возраст от 1 до 120.');
+
+            currentUser.name = name;
+            currentUser.gender = gender;
+            currentUser.age = age;
+            currentUser.bio = bio;
+            currentUser.avatar = avatarToSave;
+            saveUserState(true);
+            toggleEditProfileForm(false);
+            alert('Профиль сохранён!');
+        }
+
+        function guestPromptHTML(featureName) {
+            return `
+                <div class="max-w-md mx-auto bg-cardBg border border-white/10 rounded-3xl p-8 text-center space-y-4 shadow-xl my-12">
+                    <div class="w-16 h-16 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-2xl mx-auto flex items-center justify-center text-2xl"><i class="fa-solid fa-lock"></i></div>
+                    <h2 class="text-2xl font-bold">Sign in required</h2>
+                    <p class="text-gray-400 text-sm">Войдите или зарегистрируйтесь, чтобы открыть <span class="text-white font-semibold">${featureName}</span>.</p>
+                    <button onclick="openAuthModal('login')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow cursor-pointer">Sign In Now</button>
+                </div>
+            `;
+        }
+
+        let isRegisterMode = false;
+        function openAuthModal(mode) {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('auth-modal').classList.add('flex');
+            switchAuthTab(mode);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('flex');
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(mode) {
+            isRegisterMode = (mode === 'register');
+            document.getElementById('register-fields').classList.toggle('hidden', !isRegisterMode);
+            document.getElementById('auth-modal-title').innerText = isRegisterMode ? 'Create SEKAI Account' : 'Welcome Back to SEKAI';
+            document.getElementById('auth-submit-btn').innerText = isRegisterMode ? 'Register' : 'Sign In';
+            document.getElementById('tab-register-btn').className = isRegisterMode ? "flex-1 py-2 rounded-lg text-xs font-bold bg-purple-600 text-white cursor-pointer" : "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 cursor-pointer";
+            document.getElementById('tab-login-btn').className = !isRegisterMode ? "flex-1 py-2 rounded-lg text-xs font-bold bg-purple-600 text-white cursor-pointer" : "flex-1 py-2 rounded-lg text-xs font-bold text-gray-400 cursor-pointer";
+        }
+
+        async function handleAuthSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('auth-email').value.trim();
+            const password = document.getElementById('auth-password').value;
+            const name = document.getElementById('reg-name').value.trim();
+            const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+            const payload = isRegisterMode ? { name, email, password } : { email, password };
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok) return alert(data.error || 'Ошибка авторизации');
+                currentUser = { ...data.user, isLoggedIn: true };
+                saveUserState(false);
+                closeAuthModal();
+                document.getElementById('auth-form').reset();
+                switchPage(currentUser.isAdmin ? 'admin' : 'home');
+            } catch (err) {
+                alert('Не удалось связаться с сервером.');
+            }
+        }
+
+        function logoutUser() {
+            currentUser = { isLoggedIn: false };
+            saveUserState(false);
+            switchPage('home');
+        }
+
+        // --- ADMIN: ANIME ---
+        async function adminAddAnime() {
+            const title = document.getElementById('admin-title').value.trim();
+            const genre = document.getElementById('admin-genre').value.trim();
+            const eps = parseInt(document.getElementById('admin-eps').value, 10) || 12;
+            const img = document.getElementById('admin-img').value.trim() || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600';
+            const youtubeUrl = document.getElementById('admin-youtube').value.trim();
+            const desc = document.getElementById('admin-desc').value.trim() || 'Описание отсутствует.';
+            if (!title) return alert('Введите название аниме!');
+
+            const res = await fetch('/api/anime', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, genre, eps, img, youtubeUrl, desc })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка добавления');
+            catalogAnimeList.unshift(data);
+            ['admin-title', 'admin-genre', 'admin-eps', 'admin-img', 'admin-youtube', 'admin-desc'].forEach(id => document.getElementById(id).value = '');
+            renderAdminAnimeList();
+            renderHomeTrending();
+            alert('Аниме добавлено!');
+        }
+
+        function renderAdminAnimeList() {
+            const el = document.getElementById('admin-anime-list');
+            if (!el) return;
+            el.innerHTML = catalogAnimeList.map(a => `
+                <div class="bg-cardBg border border-white/10 p-4 rounded-2xl flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <h4 class="font-bold text-sm truncate">${a.title}</h4>
+                        <p class="text-xs text-gray-400 truncate">${a.genre} • ${a.eps} эп. • YouTube: ${a.youtubeUrl ? 'задан' : 'не задан'}</p>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <button onclick="openEditAnimeModal(${a.id})" class="bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer">Редактировать</button>
+                        <button onclick="adminDeleteAnime(${a.id})" class="bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openEditAnimeModal(id) {
+            const a = catalogAnimeList.find(item => Number(item.id) === Number(id));
+            if (!a) return;
+            document.getElementById('edit-anime-id').value = a.id;
+            document.getElementById('edit-anime-title').value = a.title || '';
+            document.getElementById('edit-anime-genre').value = a.genre || '';
+            document.getElementById('edit-anime-eps').value = a.eps || 12;
+            document.getElementById('edit-anime-rating').value = a.rating || 9.0;
+            document.getElementById('edit-anime-tag').value = a.tag || 'NEW';
+            document.getElementById('edit-anime-epname').value = a.currentEpName || '';
+            document.getElementById('edit-anime-youtube').value = a.youtubeUrl || '';
+            document.getElementById('edit-anime-img').value = a.img || '';
+            document.getElementById('edit-anime-desc').value = a.desc || '';
+            const m = document.getElementById('edit-anime-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        }
+
+        function closeEditAnimeModal() {
+            const m = document.getElementById('edit-anime-modal');
+            m.classList.remove('flex'); m.classList.add('hidden');
+        }
+
+        async function adminSaveEditedAnime() {
+            const id = Number(document.getElementById('edit-anime-id').value);
+            const payload = {
+                title: document.getElementById('edit-anime-title').value.trim(),
+                genre: document.getElementById('edit-anime-genre').value.trim(),
+                eps: parseInt(document.getElementById('edit-anime-eps').value, 10) || 12,
+                rating: parseFloat(document.getElementById('edit-anime-rating').value) || 9.0,
+                tag: document.getElementById('edit-anime-tag').value.trim() || 'NEW',
+                currentEpName: document.getElementById('edit-anime-epname').value.trim(),
+                youtubeUrl: document.getElementById('edit-anime-youtube').value.trim(),
+                img: document.getElementById('edit-anime-img').value.trim(),
+                desc: document.getElementById('edit-anime-desc').value.trim()
+            };
+            const res = await fetch(`/api/anime/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка сохранения');
+            const idx = catalogAnimeList.findIndex(item => Number(item.id) === id);
+            if (idx !== -1) catalogAnimeList[idx] = data;
+            if (activeWatchAnime && Number(activeWatchAnime.id) === id) {
+                activeWatchAnime = data;
+                renderWatchView();
+            }
+            renderAdminAnimeList();
+            renderHomeTrending();
+            closeEditAnimeModal();
+            alert('Аниме и YouTube-ссылка сохранены!');
+        }
+
+        async function adminDeleteAnime(id) {
+            if (!confirm('Удалить аниме?')) return;
+            const res = await fetch(`/api/anime/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                catalogAnimeList = catalogAnimeList.filter(item => Number(item.id) !== Number(id));
+                renderAdminAnimeList();
+                renderHomeTrending();
+            }
+        }
+
+        // --- ADMIN: REWARDS ---
+        async function adminAddReward() {
+            const title = document.getElementById('admin-rew-title').value.trim();
+            if (!title) return alert('Введите название награды');
+            const res = await fetch('/api/rewards', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title,
+                    badge: document.getElementById('admin-rew-badge').value.trim() || 'REWARD',
+                    cost: Number(document.getElementById('admin-rew-cost').value) || 0,
+                    minLevel: Number(document.getElementById('admin-rew-level').value) || 1,
+                    img: document.getElementById('admin-rew-img').value.trim(),
+                    desc: document.getElementById('admin-rew-desc').value.trim()
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка');
+            rewardsData.push(data);
+            ['admin-rew-title', 'admin-rew-badge', 'admin-rew-cost', 'admin-rew-level', 'admin-rew-img', 'admin-rew-desc'].forEach(id => document.getElementById(id).value = '');
+            renderAdminRewardsList();
+            renderRewardsPage();
+        }
+
+        function renderAdminRewardsList() {
+            const el = document.getElementById('admin-rewards-list');
+            if (!el) return;
+            el.innerHTML = rewardsData.map(r => `
+                <div class="bg-white/5 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-sm">${r.title} <span class="text-yellow-400 text-xs">(${r.cost} XP, Lv.${r.minLevel || 1})</span></div>
+                        <div class="text-xs text-gray-400">${r.desc}</div>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="openEditRewardModal('${String(r.id).replace(/'/g, "\\'")}')" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-xl text-xs font-semibold cursor-pointer">Редактировать</button>
+                        <button onclick="adminDeleteReward('${String(r.id).replace(/'/g, "\\'")}')" class="bg-red-600/20 text-red-300 px-3 py-1 rounded-xl text-xs font-semibold cursor-pointer">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openEditRewardModal(id) {
+            const r = rewardsData.find(item => String(item.id) === String(id));
+            if (!r) return;
+            document.getElementById('edit-rew-id').value = r.id;
+            document.getElementById('edit-rew-title').value = r.title || '';
+            document.getElementById('edit-rew-cost').value = r.cost || 0;
+            document.getElementById('edit-rew-level').value = r.minLevel || 1;
+            document.getElementById('edit-rew-badge').value = r.badge || 'REWARD';
+            document.getElementById('edit-rew-img').value = r.img || '';
+            document.getElementById('edit-rew-desc').value = r.desc || '';
+            const m = document.getElementById('edit-reward-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        }
+
+        function closeEditRewardModal() {
+            const m = document.getElementById('edit-reward-modal');
+            m.classList.remove('flex'); m.classList.add('hidden');
+        }
+
+        async function adminSaveEditedReward() {
+            const id = document.getElementById('edit-rew-id').value;
+            const res = await fetch(`/api/rewards/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: document.getElementById('edit-rew-title').value.trim(),
+                    cost: Number(document.getElementById('edit-rew-cost').value) || 0,
+                    minLevel: Number(document.getElementById('edit-rew-level').value) || 1,
+                    badge: document.getElementById('edit-rew-badge').value.trim(),
+                    img: document.getElementById('edit-rew-img').value.trim(),
+                    desc: document.getElementById('edit-rew-desc').value.trim()
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка');
+            const idx = rewardsData.findIndex(item => String(item.id) === String(id));
+            if (idx !== -1) rewardsData[idx] = data;
+            renderAdminRewardsList();
+            renderRewardsPage();
+            closeEditRewardModal();
+        }
+
+        async function adminDeleteReward(id) {
+            const res = await fetch(`/api/rewards/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            if (res.ok) {
+                rewardsData = rewardsData.filter(item => String(item.id) !== String(id));
+                renderAdminRewardsList();
+                renderRewardsPage();
+            }
+        }
+
+        // --- ADMIN: QUESTS ---
+        async function adminAddQuest() {
+            const title = document.getElementById('admin-qst-title').value.trim();
+            if (!title) return alert('Введите название задания');
+            const res = await fetch('/api/quests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title,
+                    type: document.getElementById('admin-qst-type').value,
+                    target: Number(document.getElementById('admin-qst-target').value) || 1,
+                    rewardXp: Number(document.getElementById('admin-qst-xp').value) || 100,
+                    desc: document.getElementById('admin-qst-desc').value.trim(),
+                    daily: true
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка');
+            questsData.push(data);
+            ['admin-qst-title', 'admin-qst-desc'].forEach(id => document.getElementById(id).value = '');
+            renderAdminQuestsList();
+            renderQuestsPage();
+        }
+
+        function renderAdminQuestsList() {
+            const el = document.getElementById('admin-quests-list');
+            if (!el) return;
+            el.innerHTML = questsData.map(q => `
+                <div class="bg-white/5 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-sm">${q.title} <span class="text-emerald-400 text-xs">(+${q.rewardXp} XP, цель: ${q.target})</span></div>
+                        <div class="text-xs text-gray-400">${q.desc}</div>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="openEditQuestModal('${String(q.id).replace(/'/g, "\\'")}')" class="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-xl text-xs font-semibold cursor-pointer">Редактировать</button>
+                        <button onclick="adminDeleteQuest('${String(q.id).replace(/'/g, "\\'")}')" class="bg-red-600/20 text-red-300 px-3 py-1 rounded-xl text-xs font-semibold cursor-pointer">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openEditQuestModal(id) {
+            const q = questsData.find(item => String(item.id) === String(id));
+            if (!q) return;
+            document.getElementById('edit-qst-id').value = q.id;
+            document.getElementById('edit-qst-title').value = q.title || '';
+            document.getElementById('edit-qst-type').value = q.type || 'custom';
+            document.getElementById('edit-qst-target').value = q.target || 1;
+            document.getElementById('edit-qst-xp').value = q.rewardXp || 100;
+            document.getElementById('edit-qst-desc').value = q.desc || '';
+            const m = document.getElementById('edit-quest-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        }
+
+        function closeEditQuestModal() {
+            const m = document.getElementById('edit-quest-modal');
+            m.classList.remove('flex'); m.classList.add('hidden');
+        }
+
+        async function adminSaveEditedQuest() {
+            const id = document.getElementById('edit-qst-id').value;
+            const res = await fetch(`/api/quests/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: document.getElementById('edit-qst-title').value.trim(),
+                    type: document.getElementById('edit-qst-type').value,
+                    target: Number(document.getElementById('edit-qst-target').value) || 1,
+                    rewardXp: Number(document.getElementById('edit-qst-xp').value) || 100,
+                    desc: document.getElementById('edit-qst-desc').value.trim()
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка');
+            const idx = questsData.findIndex(item => String(item.id) === String(id));
+            if (idx !== -1) questsData[idx] = data;
+            renderAdminQuestsList();
+            renderQuestsPage();
+            closeEditQuestModal();
+        }
+
+        async function adminDeleteQuest(id) {
+            const res = await fetch(`/api/quests/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            if (res.ok) {
+                questsData = questsData.filter(item => String(item.id) !== String(id));
+                renderAdminQuestsList();
+                renderQuestsPage();
+            }
+        }
+
+        // --- ADMIN: TICKETS ---
+        function renderAdminTicketsList() {
+            const el = document.getElementById('admin-tickets-list');
+            if (!el) return;
+            if (!ticketsData.length) {
+                el.innerHTML = `<p class="text-xs text-gray-400">Тикетов пока нет.</p>`;
+                return;
+            }
+            el.innerHTML = ticketsData.map(t => `
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <div class="font-bold text-sm">${t.subject}</div>
+                            <div class="text-xs text-gray-400">От: ${t.userName} • Статус: ${t.status}</div>
+                        </div>
+                        <button onclick="toggleTicketStatus('${String(t.id).replace(/'/g, "\\'")}')" class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-xl text-xs cursor-pointer">
+                            ${t.status === 'Решён' ? 'Открыть' : 'Отметить решённым'}
+                        </button>
+                    </div>
+                    <div class="space-y-1.5">
+                        ${(t.messages || []).map(m => `<div class="text-xs bg-black/30 p-2.5 rounded-xl"><strong>${m.sender}:</strong> ${m.text}</div>`).join('')}
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="reply-input-${t.id}" placeholder="Ответ администратора..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs">
+                        <button onclick="adminReplyTicket('${String(t.id).replace(/'/g, "\\'")}')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer">Ответить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function adminReplyTicket(ticketId) {
+            const inp = document.getElementById(`reply-input-${ticketId}`);
+            const text = inp ? inp.value.trim() : '';
+            if (!text) return;
+            const res = await fetch(`/api/tickets/${encodeURIComponent(ticketId)}/reply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender: currentUser.name || 'Админ', role: 'admin', text })
+            });
+            if (res.ok) {
+                const updated = await res.json();
+                const idx = ticketsData.findIndex(t => String(t.id) === String(ticketId));
+                if (idx !== -1) ticketsData[idx] = updated;
+                renderAdminTicketsList();
+            }
+        }
+
+        async function toggleTicketStatus(ticketId) {
+            const t = ticketsData.find(item => String(item.id) === String(ticketId));
+            if (!t) return;
+            const nextStatus = t.status === 'Решён' ? 'Открыт' : 'Решён';
+            const res = await fetch(`/api/tickets/${encodeURIComponent(ticketId)}/reply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: nextStatus })
+            });
+            if (res.ok) {
+                ticketsData[ticketsData.findIndex(item => String(item.id) === String(ticketId))] = await res.json();
+                renderAdminTicketsList();
+            }
+        }
+
+        // --- ADMIN & FRONTEND: QUIZZES ---
+        function adminAddQuestionToTemp() {
+            const qText = document.getElementById('admin-q-text').value.trim();
+            const opts = [0, 1, 2, 3].map(i => document.getElementById(`admin-q-opt${i}`).value.trim()).filter(Boolean);
+            const correct = parseInt(document.getElementById('admin-q-correct').value, 10) || 0;
+            if (!qText || opts.length < 2) return alert('Введите вопрос и минимум 2 варианта ответа!');
+            if (correct < 0 || correct >= opts.length) return alert('Неверный индекс правильного ответа!');
+            tempQuizQuestions.push({ question: qText, options: opts, correct });
+            document.getElementById('admin-q-text').value = '';
+            [0, 1, 2, 3].forEach(i => document.getElementById(`admin-q-opt${i}`).value = '');
+            document.getElementById('admin-q-correct').value = '0';
+            renderTempQuestions();
+        }
+
+        function renderTempQuestions() {
+            const c = document.getElementById('temp-questions-list');
+            document.getElementById('temp-questions-count').innerText = tempQuizQuestions.length;
+            c.innerHTML = tempQuizQuestions.length
+                ? tempQuizQuestions.map((q, idx) => `<div class="bg-white/5 p-3 rounded-xl text-xs flex justify-between"><span><b>В${idx + 1}:</b> ${q.question}</span><button onclick="tempQuizQuestions.splice(${idx},1);renderTempQuestions()" class="text-red-400 cursor-pointer"><i class="fa-solid fa-trash"></i></button></div>`).join('')
+                : `<p class="text-xs text-gray-500 italic">Вопросы пока не добавлены.</p>`;
+        }
+
+        async function adminSaveFullQuiz() {
+            const title = document.getElementById('admin-quiz-title').value.trim();
+            const desc = document.getElementById('admin-quiz-desc').value.trim();
+            const img = document.getElementById('admin-quiz-img').value.trim();
+            if (!title || !tempQuizQuestions.length) return alert('Введите название квиза и добавьте вопросы!');
+            const res = await fetch('/api/quizzes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, desc, img, questions: tempQuizQuestions })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка сохранения');
+            quizzesData.push(data);
+            tempQuizQuestions = [];
+            ['admin-quiz-title', 'admin-quiz-desc', 'admin-quiz-img'].forEach(id => document.getElementById(id).value = '');
+            renderTempQuestions();
+            renderAdminQuizList();
+            alert('Квиз опубликован!');
+        }
+
+        function renderAdminQuizList() {
+            const el = document.getElementById('admin-quiz-list');
+            if (!el) return;
+            el.innerHTML = quizzesData.map(q => `
+                <div class="bg-cardBg border border-white/10 p-4 rounded-2xl flex items-center justify-between gap-3">
+                    <div>
+                        <h4 class="font-bold text-sm">${q.title}</h4>
+                        <p class="text-xs text-gray-400">Вопросов: ${q.questions.length} • ${q.desc}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="openEditQuizModal('${String(q.id).replace(/'/g, "\\'")}')" class="bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer">Редактировать</button>
+                        <button onclick="adminDeleteQuiz('${String(q.id).replace(/'/g, "\\'")}')" class="bg-red-600/20 text-red-300 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openEditQuizModal(quizId) {
+            const q = quizzesData.find(item => String(item.id) === String(quizId));
+            if (!q) return;
+            document.getElementById('edit-quiz-id').value = q.id;
+            document.getElementById('edit-quiz-title').value = q.title || '';
+            document.getElementById('edit-quiz-img').value = q.img || '';
+            document.getElementById('edit-quiz-desc').value = q.desc || '';
+            editingQuizQuestions = JSON.parse(JSON.stringify(q.questions || []));
+            renderEditQuizQuestions();
+            const m = document.getElementById('edit-quiz-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        }
+
+        function closeEditQuizModal() {
+            const m = document.getElementById('edit-quiz-modal');
+            m.classList.remove('flex'); m.classList.add('hidden');
+            editingQuizQuestions = [];
+        }
+
+        function renderEditQuizQuestions() {
+            document.getElementById('edit-quiz-q-count').innerText = editingQuizQuestions.length;
+            document.getElementById('edit-quiz-q-list').innerHTML = editingQuizQuestions.map((q, idx) => `
+                <div class="bg-white/5 p-3 rounded-xl text-xs flex justify-between items-center">
+                    <span><b>В${idx + 1}:</b> ${q.question} (${q.options.join(', ')})</span>
+                    <button onclick="editingQuizQuestions.splice(${idx},1);renderEditQuizQuestions()" class="text-red-400 cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function editQuizAddQuestion() {
+            const qText = document.getElementById('edit-q-text').value.trim();
+            const opts = [0, 1, 2, 3].map(i => document.getElementById(`edit-q-opt${i}`).value.trim()).filter(Boolean);
+            const correct = parseInt(document.getElementById('edit-q-correct').value, 10) || 0;
+            if (!qText || opts.length < 2) return alert('Введите вопрос и минимум 2 варианта ответа!');
+            editingQuizQuestions.push({ question: qText, options: opts, correct });
+            document.getElementById('edit-q-text').value = '';
+            [0, 1, 2, 3].forEach(i => document.getElementById(`edit-q-opt${i}`).value = '');
+            renderEditQuizQuestions();
+        }
+
+        async function adminSaveEditedQuiz() {
+            const quizId = document.getElementById('edit-quiz-id').value;
+            const res = await fetch(`/api/quizzes/${encodeURIComponent(quizId)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: document.getElementById('edit-quiz-title').value.trim(),
+                    img: document.getElementById('edit-quiz-img').value.trim(),
+                    desc: document.getElementById('edit-quiz-desc').value.trim(),
+                    questions: editingQuizQuestions
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Ошибка');
+            const idx = quizzesData.findIndex(item => String(item.id) === String(quizId));
+            if (idx !== -1) quizzesData[idx] = data;
+            renderAdminQuizList();
+            closeEditQuizModal();
+            alert('Квиз сохранён!');
+        }
+
+        async function adminDeleteQuiz(quizId) {
+            if (!confirm('Удалить квиз?')) return;
+            const res = await fetch(`/api/quizzes/${encodeURIComponent(quizId)}`, { method: 'DELETE' });
+            if (res.ok) {
+                quizzesData = quizzesData.filter(item => String(item.id) !== String(quizId));
+                renderAdminQuizList();
+            }
+        }
+
+        let activeQuiz = null;
+        let currentQuizIndex = 0;
+        let correctAnswersCount = 0;
+
+        function renderQuizHub() {
+            const container = document.getElementById('quiz-container-box');
+            if (!quizzesData.length) {
+                container.innerHTML = `<div class="bg-cardBg border border-white/10 rounded-3xl p-8 text-center text-gray-400 text-sm">Квизов пока нет.</div>`;
+                return;
+            }
+            container.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    ${quizzesData.map(q => `
+                        <div class="bg-cardBg border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-purple-500/50 transition-all">
+                            <div class="h-40 overflow-hidden relative">
+                                <img src="${q.img}" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-yellow-500 text-black font-bold text-xs px-2.5 py-1 rounded">1000 XP</span>
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <h3 class="font-bold text-lg">${q.title}</h3>
+                                <p class="text-xs text-gray-400">${q.desc} (${q.questions.length} questions)</p>
+                            </div>
+                            <div class="p-5 pt-0">
+                                <button onclick="startSpecificQuiz('${String(q.id).replace(/'/g, "\\'")}')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2.5 rounded-xl text-sm cursor-pointer">Start Quiz →</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function startSpecificQuiz(quizId) {
+            activeQuiz = quizzesData.find(q => String(q.id) === String(quizId));
+            currentQuizIndex = 0;
+            correctAnswersCount = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-container-box');
+            if (currentQuizIndex >= activeQuiz.questions.length) {
+                const isAllCorrect = (correctAnswersCount === activeQuiz.questions.length);
+                if (isAllCorrect) {
+                    currentUser.xp = (Number(currentUser.xp) || 0) + 1000;
+                    saveUserState(true);
+                    container.innerHTML = `<div class="bg-cardBg border border-white/10 rounded-3xl p-8 text-center space-y-4"><h2 class="text-2xl font-extrabold text-emerald-400">Perfect Score! +1000 XP</h2><p class="text-sm text-gray-300">You answered all ${activeQuiz.questions.length} questions correctly!</p><button onclick="renderQuizHub()" class="bg-purple-600 text-white font-bold px-6 py-3 rounded-xl cursor-pointer">Back to Quizzes</button></div>`;
+                } else {
+                    container.innerHTML = `<div class="bg-cardBg border border-white/10 rounded-3xl p-8 text-center space-y-4"><h2 class="text-2xl font-extrabold text-red-400">Quiz Failed</h2><p class="text-sm text-gray-300">You got ${correctAnswersCount} out of ${activeQuiz.questions.length} questions correct.</p><button onclick="startSpecificQuiz('${String(activeQuiz.id).replace(/'/g, "\\'")}')" class="bg-purple-600 text-white font-bold px-6 py-3 rounded-xl cursor-pointer">Try Again</button></div>`;
+                }
+                return;
+            }
+            const q = activeQuiz.questions[currentQuizIndex];
+            container.innerHTML = `
+                <div class="bg-cardBg border border-white/10 rounded-3xl p-8 space-y-6">
+                    <div class="flex justify-between items-center text-xs text-purple-400 font-bold">
+                        <span>Question ${currentQuizIndex + 1} of ${activeQuiz.questions.length}</span>
+                        <span>${activeQuiz.title}</span>
+                    </div>
+                    <h3 class="text-xl font-bold">${q.question}</h3>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, idx) => `<button onclick="answerQuizOption(${idx},${q.correct})" class="w-full text-left bg-white/5 hover:bg-purple-600/20 border border-white/10 p-4 rounded-xl text-sm transition-all font-medium cursor-pointer">${idx + 1}. ${opt}</button>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuizOption(selectedIndex, correctIndex) {
+            if (selectedIndex === correctIndex) correctAnswersCount++;
+            currentQuizIndex++;
+            renderQuizQuestion();
+        }
+
+        async function initApp() {
+            renderHeader();
+            checkGuards();
+            renderWatchlist();
+            renderTempQuestions();
+            await loadAllData();
+            renderHomeTrending();
+            renderRewardsPage();
+            renderQuestsPage();
+            renderCommunityPage();
+            renderSupportPage();
+        }
+
+        initApp();
+    </script>
+</body>
+</html>

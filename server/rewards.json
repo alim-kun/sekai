@@ -1,0 +1,29 @@
+[
+  {
+    "id": "rew_genshin_skin",
+    "title": "Genshin Impact x SEKAI Skin",
+    "desc": "Exclusive Demon Slayer crossover skin for your character.",
+    "img": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600",
+    "cost": 2500,
+    "minLevel": 1,
+    "badge": "EXCLUSIVE"
+  },
+  {
+    "id": "rew_figure_box",
+    "title": "Demon Slayer Figure Box",
+    "desc": "Official 1/8 scale Tanjiro figure, limited SEKAI edition.",
+    "img": "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    "cost": 15000,
+    "minLevel": 30,
+    "badge": "EXCLUSIVE"
+  },
+  {
+    "id": "rew_wallpaper",
+    "title": "Century Watcher Wallpaper",
+    "desc": "Exclusive 4K cinematic wallpaper unlocked by watching 100+ anime.",
+    "img": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600",
+    "cost": 0,
+    "minLevel": 1,
+    "badge": "FREE"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "q_watchlist_1",
+    "title": "Первый шаг в каталоге",
+    "desc": "Добавьте хотя бы 1 аниме в свой Watchlist.",
+    "type": "watchlist",
+    "target": 1,
+    "rewardXp": 250,
+    "daily": true
+  },
+  {
+    "id": "q_profile_bio",
+    "title": "Личность охотника",
+    "desc": "Заполните описание профиля (Bio).",
+    "type": "profile_bio",
+    "target": 1,
+    "rewardXp": 200,
+    "daily": true
+  },
+  {
+    "id": "q_post_1",
+    "title": "Голос сообщества",
+    "desc": "Опубликуйте 1 пост в разделе Community.",
+    "type": "posts",
+    "target": 1,
+    "rewardXp": 300,
+    "daily": true
+  },
+  {
+    "id": "q_ticket_1",
+    "title": "Связь с поддержкой",
+    "desc": "Отправьте обращение в Support (или получите ответ).",
+    "type": "tickets",
+    "target": 1,
+    "rewardXp": 150,
+    "daily": true
+  }
+]

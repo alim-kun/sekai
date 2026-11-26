@@ -1,0 +1,40 @@
+[
+  {
+    "id": "demonslayer",
+    "title": "Demon Slayer Quiz",
+    "desc": "Test your knowledge on Tanjiro and Hashira.",
+    "img": "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    "questions": [
+      {
+        "question": "What is Tanjiro's primary breathing style initially?",
+        "options": [
+          "Water Breathing",
+          "Sun Breathing",
+          "Flame Breathing",
+          "Thunder Breathing"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "What is the name of Tanjiro's sister?",
+        "options": [
+          "Nezuko",
+          "Shinobu",
+          "Mitsuri",
+          "Kanao"
+        ],
+        "correct": 0
+      },
+      {
+        "question": "Who is the leader of the Demon Slayer Corps?",
+        "options": [
+          "Muzan Kibutsuji",
+          "Kagaya Ubuyashiki",
+          "Yoriichi",
+          "Sakonji"
+        ],
+        "correct": 1
+      }
+    ]
+  }
+]
